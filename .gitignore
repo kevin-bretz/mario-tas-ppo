@@ -1,0 +1,22 @@
+# Trained weights live on Hugging Face, not here
+*.pth
+*.pt
+
+# Emulator libraries / tools (bring your own) and the ROM
+retro/
+cheat-engine/
+ROM/
+*.sfc
+*.smc
+
+# Recordings
+*.mp4
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.DS_Store
