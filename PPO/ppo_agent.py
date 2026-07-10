@@ -61,10 +61,13 @@ class PPOAgent:
         learning_rate: float,
         gamma: float,
         epsilon: float,
-        entropy_coef: float,  # Only static entropy coefficient
+        entropy_coef: float,
         batch_size: int,
         num_epochs: int,
-        device=None
+        num_stack: int = 4,
+        device=None,
+        entropy_coef_min: float = 0.001,
+        entropy_coef_decay: float = 0.995,
     ):
         self.env = env
         self.state_size = state_size
@@ -73,11 +76,14 @@ class PPOAgent:
         self.lr = learning_rate
         self.gamma = gamma
         self.epsilon = epsilon
-        self.device = torch.device("cuda")
+        self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.num_stack = num_stack
         self.network = PPONetwork(self.state_size, self.hidden_size, self.action_size).to(self.device)
         self.optimizer = optim.Adam(self.network.parameters(), lr=self.lr)
 
-        self.entropy_coef = entropy_coef  # Static
+        self.entropy_coef = entropy_coef
+        self.entropy_coef_min = entropy_coef_min
+        self.entropy_coef_decay = entropy_coef_decay
 
         self.batch_size = batch_size
         self.num_epochs = num_epochs
@@ -127,6 +133,11 @@ class PPOAgent:
 
     def set_entropy_coef(self, value):
         self.entropy_coef = value
+
+    def decay_entropy_coef(self):
+        # Multiplicatively decay the entropy bonus toward its floor, called once per episode.
+        self.entropy_coef = max(self.entropy_coef_min, self.entropy_coef * self.entropy_coef_decay)
+        return self.entropy_coef
 
     def update(self):
         if len(self.states) < 2:
@@ -187,7 +198,7 @@ class PPOAgent:
                 critic_loss = 0.5 * (current_values.squeeze() - b_returns).pow(2).mean()
 
                 entropy = dist_current.entropy().mean()
-                total_loss = actor_loss + critic_loss - self.entropy_coef * entropy  # Static
+                total_loss = actor_loss + critic_loss - self.entropy_coef * entropy
 
                 self.optimizer.zero_grad()
                 total_loss.backward()
