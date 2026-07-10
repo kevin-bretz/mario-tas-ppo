@@ -17,7 +17,7 @@ The agent reads the game as a stack of 84 by 84 grayscale frames and runs them t
 
 ## Running
 
-You need the SNES Super Mario World ROM (not included, bring your own), imported into stable-retro with `python -m retro.import`. Training runs against the `SuperMarioWorld-Snes` integration.
+You need the SNES Super Mario World ROM. It is copyrighted by Nintendo, so it is not included here and cannot be, you have to supply your own legally obtained copy. Put it in a folder and run `python -m retro.import path/to/that/folder`, which recognises the ROM by its checksum and installs it into stable-retro under the `SuperMarioWorld-Snes` integration. Training then runs against that integration.
 
 The reward reads memory values that the stock `SuperMarioWorld-Snes` integration does not expose, so copy the custom integration over the one that ships with stable-retro before training:
 
