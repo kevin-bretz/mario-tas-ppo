@@ -1,6 +1,6 @@
 # Super Mario World TAS Agent
 
-Part of a group project (five of us) for the Modern Game AI course at Leiden, comparing three reinforcement learning algorithms (DQN, PPO and SAC) on speedrunning the first level of Super Mario World (SNES), in the spirit of a tool assisted speedrun. This repository holds the from-scratch PPO agent, with the algorithm, the parallel emulator setup and the reward all written by hand rather than pulled from a library.
+Part of a group project for the Modern Game AI course at Leiden University, comparing three reinforcement learning algorithms (DQN, PPO and SAC) on speedrunning the first level of Super Mario World (SNES), in the spirit of a tool assisted speedrun. This repository holds the from-scratch PPO agent, with the algorithm, the parallel emulator setup and the reward all written by hand rather than pulled from a library.
 
 ## How it works
 
